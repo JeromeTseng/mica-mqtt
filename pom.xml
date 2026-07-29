@@ -13,18 +13,18 @@
 
     <properties>
         <!-- mica-mqtt version -->
-        <revision>2.6.8.3</revision>
+        <revision>2.6.9-SNAPSHOT</revision>
         <!-- java version -->
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-        <maven-flatten.version>1.7.3</maven-flatten.version>
+        <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+        <maven-flatten.version>1.8.0</maven-flatten.version>
         <!-- mica-net version -->
-        <mica-net.version>2.0.12</mica-net.version>
+        <mica-net.version>2.0.13-SNAPSHOT</mica-net.version>
         <mica-auto.version>2.3.5</mica-auto.version>
         <spring.boot.version>2.7.18</spring.boot.version>
         <solon.version>4.0.3</solon.version>
-        <jfinal.version>5.2.7</jfinal.version>
+        <jfinal.version>5.2.8</jfinal.version>
         <tinylog.version>2.7.0</tinylog.version>
         <h2.version>2.2.224</h2.version>
         <snakeyaml.version>2.6</snakeyaml.version>
