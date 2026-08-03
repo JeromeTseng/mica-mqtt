@@ -60,9 +60,9 @@ mqtt:
       enable: false             # 是否开启，默认：false
       port: 8883                # 端口，默认：8883
       ssl:                      # ssl 配置，必须
-        keystore-path:          # 必须参数：ssl keystore 目录，支持 classpath:/ 路径。
+        keystore-path:          # 必须参数：ssl keystore 目录，支持 classpath: 路径。
         keystore-pass:          # 必选参数：ssl keystore 密码
-        truststore-path:        # 可选参数：ssl 双向认证 truststore 目录，支持 classpath:/ 路径。
+        truststore-path:        # 可选参数：ssl 双向认证 truststore 目录，支持 classpath: 路径。
         truststore-pass:        # 可选参数：ssl 双向认证 truststore 密码
         client-auth: NONE       # 是否需要客户端认证（双向认证），默认：NONE（不需要）
         protocols:              # 可选参数：启用的 TLS 协议，需运行时 JDK 支持（2.6.9 开始支持）
@@ -81,9 +81,9 @@ mqtt:
       enable: false             # 是否开启，默认：false
       port: 8084                # 端口，默认：8084
       ssl:                      # ssl 配置，必须
-        keystore-path:          # 必须参数：ssl keystore 目录，支持 classpath:/ 路径。
+        keystore-path:          # 必须参数：ssl keystore 目录，支持 classpath: 路径。
         keystore-pass:          # 必选参数：ssl keystore 密码
-        truststore-path:        # 可选参数：ssl 双向认证 truststore 目录，支持 classpath:/ 路径。
+        truststore-path:        # 可选参数：ssl 双向认证 truststore 目录，支持 classpath: 路径。
         truststore-pass:        # 可选参数：ssl 双向认证 truststore 密码
         client-auth: NONE       # 是否需要客户端认证（双向认证），默认：NONE（不需要）
         protocols:              # 可选参数：启用的 TLS 协议，需运行时 JDK 支持（2.6.9 开始支持）
@@ -106,7 +106,7 @@ mqtt:
         enable: true
       ssl:                      # http ssl 配置
         enable: false           # 是否启用，默认：false
-        keystore-path:          # 必填：ssl keystore 证书路径，支持 classpath:/ 路径
+        keystore-path:          # 必填：ssl keystore 证书路径，支持 classpath: 路径
         keystore-pass:          # 必填：ssl keystore 密码
         truststore-path:        # 可选：ssl 双向认证 truststore 证书路径
         truststore-pass:        # 可选：ssl 双向认证 truststore 密码
