@@ -2,12 +2,10 @@
 
 ## 发行版本
 
-### v2.6.9 - 2026-07-30
-- ⬆️ 升级到 mica-net 2.0.13 正式版。
-- ⬆️ 升级 solon 到 4.0.4。
-- ⬆️ 升级 graal-sdk 到 25.2.4。
-- 🧪 mqtt-client 增加连接混沌测试中 accept 线程停止校验：在假 broker 关闭连接时等待 accept 线程完全停止，通过 await 超时判断是否停止，未停止则抛出异常；防止旧 broker 响应重连，使用 TCP RST 立即断开客户端连接，清理活跃 socket 集合，确保测试环境一致性。
-- 🔧 2.6.x 不再做太大的变更求稳，老 dev 改为 2.7.x 去孵化更多功能和特性。
+### v2.6.9 - 2026-07-08
+- ✨ mica-mqtt SSL 支持 TLS 协议版本列表（如 TLSv1.2、TLSv1.3）等配置，简化使用。
+- ✨ 添加 Spring Boot、Solon SSL 对 TLS 协议版本等配置项的配置。
+- ♻️ mica-mqtt-client 移除内置的 `MqttSSLEngineCustomizer`，改为配置参数驱动。
 
 ### v2.6.8.3 - 2026-07-23
 - 🐛 升级到 mica-net 2.0.12 优化异步 Accept 注册逻辑，提前注册下一次监听以避免连接初始化阻塞后续接入和优化异常后的接入，gitee #IK377S 感谢 `@scafel` 反馈。
