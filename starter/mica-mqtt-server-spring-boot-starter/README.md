@@ -179,7 +179,70 @@ public class MqttServerMessageListener implements IMqttMessageListener {
 }
 ```
 
-### 2.4 自定义配置（可选）
+### 2.4 @MqttServerFunction（MQTT 消息处理函数）注解订阅
+
+`2.5.3` 开始支持，通过 `@MqttServerFunction` 注解标注方法即可订阅 MQTT 消息，无需实现 `IMqttMessageListener` 接口。注意：如果自行实现了 `IMqttMessageListener`，`@MqttServerFunction` 注解就不生效了（二者互斥，取一即可）。
+
+注解定义于 `org.dromara.mica.mqtt.core.annotation.MqttServerFunction`（`2.5.4` 开始统一到 mica-mqtt-common 包）：
+
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| value | String[] | 无 | 订阅的 topic filter，支持通配符 `+`、`#` 以及 `${变量}` 占位符（2.5.4 开始支持） |
+| deserialize | Class<? extends MqttDeserializer> | MqttJsonDeserializer | 消息负载反序列化器，默认 JSON 反序列化，可自定义 |
+
+方法参数按类型自动注入，均为可选参数（可省略，方法参数数量需在 2 ~ 6 之间，且方法必须为 public 且非 static）：
+
+| 参数类型 | 说明 |
+| --- | --- |
+| ChannelContext | 客户端连接上下文，可选参数，如通过 `context.getClientNode()` 获取客户端节点信息 |
+| String | 实际接收到消息的主题名称，可选参数 |
+| Map<String, String> | topic 中 `${xxxx}` 变量解析结果（2.5.4 开始支持），可选参数，注意：类型必须为 `Map<String, String>` |
+| MqttPublishMessage | 完整的 MQTT 发布消息对象，包含消息头和负载，可选参数 |
+| byte[] | 消息负载内容，以字节数组形式提供，可选参数 |
+| ByteBuffer | 消息负载内容，以 ByteBuffer 形式提供，可选参数 |
+| 其他对象类型 | 消息负载内容，默认 JSON 反序列化，可通过注解 `deserialize` 属性自定义反序列化器 |
+
+示例（参考 example 模块 `MqttServerMessageListener2`）：
+
+```java
+@Slf4j
+@Service
+public class MqttServerMessageListener2 {
+
+	/**
+	 * 精确匹配 /test/object，对象参数默认 json 序列化
+	 *
+	 * @param topic mqtt Topic
+	 * @param user  订阅消息的负载内容，默认 json 序列化
+	 */
+	@MqttServerFunction("/test/object")
+	public void func1(String topic, User<?> user) {
+		log.info("topic:{} user:{}", topic, user);
+	}
+
+	/**
+	 * 精确匹配 /test/client，byte[] 接收原始消息负载
+	 */
+	@MqttServerFunction("/test/client")
+	public void func2(String topic, byte[] message) {
+		log.info("topic:{} message:{}", topic, new String(message));
+	}
+
+	/**
+	 * 匹配 /test/+，如需匹配所有消息请使用通配符 #；
+	 * ${xxxx} 为 topic 变量占位符（2.5.4 开始支持）
+	 */
+	@MqttServerFunction("/test/${xxxx}")
+	public void func3(ChannelContext context, String topic, Map<String, String> topicVars, MqttPublishMessage publishMessage, byte[] message) {
+		// 获取客户端节点信息
+		Node clientNode = context.getClientNode();
+		log.info("clientNode:{} topic:{} topicVars:{} publishMessage:{} message:{}", clientNode, topic, topicVars, publishMessage, new String(message));
+	}
+
+}
+```
+
+### 2.5 自定义配置（可选）
 
 ```java
 @Configuration(proxyBeanMethods = false)
@@ -199,7 +262,7 @@ public class MqttServerCustomizerConfiguration {
 }
 ```
 
-### 2.5 MqttServerTemplate 使用示例
+### 2.6 MqttServerTemplate 使用示例
 
 ```java
 
@@ -222,7 +285,7 @@ public class ServerService {
 }
 ```
 
-### 2.6 客户端上下线监听
+### 2.7 客户端上下线监听
 使用 Spring event 解耦客户端上下线监听，注意： `1.3.4` 开始支持。会跟自定义的 `IMqttConnectStatusListener` 实现冲突，取一即可。
 
 ```java
@@ -243,11 +306,11 @@ public class MqttConnectStatusListener {
 }
 ```
 
-### 2.7 基于 mq 消息广播集群处理
+### 2.8 基于 mq 消息广播集群处理
 
 详见: [mica-mqtt-broker](../../mica-mqtt-broker)
 
-### 2.8 Prometheus + Grafana 监控对接
+### 2.9 Prometheus + Grafana 监控对接
 
 #### 添加依赖
 ```xml
