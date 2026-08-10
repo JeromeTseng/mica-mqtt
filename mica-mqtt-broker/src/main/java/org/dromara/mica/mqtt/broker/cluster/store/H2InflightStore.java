@@ -70,11 +70,12 @@ public class H2InflightStore implements InflightStore {
 	private final MVMap<String, byte[]> map;
 
 	/**
-	 * Small async writer pool — keeps the hot send path non-blocking.
-	 * The pool size of {@value #WRITER_POOL_SIZE} is intentional: inflight writes are sequential
-	 * per clientId and rarely need more than one thread; a second thread covers bursts.
+	 * Single-thread async writer — keeps the hot send path non-blocking.
+	 * H2 MVMap requires external synchronization for concurrent writes, so a
+	 * single writer thread serializes all puts/removes and avoids lost updates.
+	 * Inflight writes are sequential per clientId, so one thread is sufficient.
 	 */
-	private static final int WRITER_POOL_SIZE = 2;
+	private static final int WRITER_POOL_SIZE = 1;
 	private final ExecutorService asyncWriter;
 
 	/**
