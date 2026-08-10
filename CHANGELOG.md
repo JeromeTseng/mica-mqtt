@@ -2,6 +2,9 @@
 
 ## 发行版本
 
+### v2.6.9.1 - 2026-08-10
+- ⬆️ 升级到 mica-net 2.0.14，修复 v2.0.13 中 `Tio.close` 将 `tryLock` 改为阻塞 `lock` 导致的 TOCTOU 竞态。
+
 ### v2.6.9 - 2026-08-05
 - ✨ mica-mqtt SSL 支持 TLS 协议版本列表（如 TLSv1.2、TLSv1.3）等配置，简化使用。
 - ✨ 添加 Spring Boot、Solon SSL 对 TLS 协议版本等配置项的配置。
